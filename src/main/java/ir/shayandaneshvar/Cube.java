@@ -6,7 +6,8 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
-
+//For Visualization
+//JavaFX 3D Coordinate => y & z axis are reverse
 public class Cube extends Group {
     private Box box1;
     private Box box2;
@@ -22,12 +23,12 @@ public class Cube extends Group {
         box4 = new Box(0.5, length, length);
         box5 = new Box(length, 0.5, length);
         box6 = new Box(length, length, 0.5);
-        box1.setTranslateZ(length / 2);
-        box2.setTranslateY(length / 2);
+        box1.setTranslateZ(-length / 2);
+        box2.setTranslateY(-length / 2);
         box3.setTranslateX(length / 2);
         box4.setTranslateX(-length / 2);
-        box5.setTranslateY(-length / 2);
-        box6.setTranslateZ(-length / 2);
+        box5.setTranslateY(length / 2);
+        box6.setTranslateZ(length / 2);
         getChildren().addAll(box1, box2, box3, box4, box5, box6);
     }
 
@@ -66,12 +67,12 @@ public class Cube extends Group {
 
     public static Cube getGraphics(ir.shayandaneshvar.Box box, int length) {
         var cube = new Cube(length);
-        cube.setColorSide1(box.getSides().get(ir.shayandaneshvar.Box.Side.S1));
-        cube.setColorSide2(box.getSides().get(ir.shayandaneshvar.Box.Side.S2));
-        cube.setColorSide3(box.getSides().get(ir.shayandaneshvar.Box.Side.S3));
-        cube.setColorSide4(box.getSides().get(ir.shayandaneshvar.Box.Side.S4));
-        cube.setColorSide5(box.getSides().get(ir.shayandaneshvar.Box.Side.S5));
-        cube.setColorSide6(box.getSides().get(ir.shayandaneshvar.Box.Side.S6));
+        cube.setColorSide1(box.getSides().get(Side.S1));
+        cube.setColorSide2(box.getSides().get(Side.S2));
+        cube.setColorSide3(box.getSides().get(Side.S3));
+        cube.setColorSide4(box.getSides().get(Side.S4));
+        cube.setColorSide5(box.getSides().get(Side.S5));
+        cube.setColorSide6(box.getSides().get(Side.S6));
         return cube;
     }
 

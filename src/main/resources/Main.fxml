@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXColorPicker?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -18,41 +19,62 @@
                <font>
                   <Font name="Arial Bold" size="16.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="By S.Shayan Daneshvar" />
+               </tooltip>
             </Label>
             <Label layoutX="21.0" layoutY="57.0" text="Color S1:" textFill="#10375c">
                <font>
                   <Font name="Arial Bold" size="14.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="Front" />
+               </tooltip>
             </Label>
             <JFXColorPicker fx:id="s2Color" editable="true" layoutX="95.0" layoutY="83.0" prefHeight="25.0" prefWidth="85.0" />
             <Label layoutX="21.0" layoutY="88.0" text="Color S2:" textFill="#10375c">
                <font>
                   <Font name="Arial Bold" size="14.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="Top" />
+               </tooltip>
             </Label>
             <JFXColorPicker fx:id="s3Color" editable="true" layoutX="95.0" layoutY="114.0" prefHeight="25.0" prefWidth="85.0" />
             <Label layoutX="21.0" layoutY="119.0" text="Color S3:" textFill="#10375c">
                <font>
                   <Font name="Arial Bold" size="14.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="Right" />
+               </tooltip>
             </Label>
             <JFXColorPicker fx:id="s4Color" editable="true" layoutX="95.0" layoutY="145.0" prefHeight="25.0" prefWidth="85.0" />
             <Label layoutX="21.0" layoutY="150.0" text="Color S4:" textFill="#10375c">
                <font>
                   <Font name="Arial Bold" size="14.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="Left" />
+               </tooltip>
             </Label>
             <JFXColorPicker fx:id="s5Color" editable="true" layoutX="95.0" layoutY="176.0" prefHeight="25.0" prefWidth="85.0" />
             <Label layoutX="21.0" layoutY="181.0" text="Color S5:" textFill="#10375c">
                <font>
                   <Font name="Arial Bold" size="14.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="Bottom" />
+               </tooltip>
             </Label>
             <JFXColorPicker fx:id="s6Color" editable="true" layoutX="95.0" layoutY="207.0" prefHeight="25.0" prefWidth="85.0" />
             <Label layoutX="21.0" layoutY="212.0" text="Color S6:" textFill="#10375c">
                <font>
                   <Font name="Arial Bold" size="14.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="Rear" />
+               </tooltip>
             </Label>
             <Label layoutX="27.0" layoutY="250.0" text="Weight:" textFill="#10375c">
                <font>

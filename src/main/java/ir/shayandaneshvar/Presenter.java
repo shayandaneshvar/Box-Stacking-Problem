@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -24,7 +25,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.*;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class Presenter implements Initializable {
     @FXML
@@ -100,14 +100,10 @@ public class Presenter implements Initializable {
 
     @FXML
     void startStacking(MouseEvent event) {
-        drawStack(calculateAllIncreasingSubsequences
-                .andThen(getTheHighestPossibleStack)
-                .apply(boxList)
-                .stream()
-                .peek(z -> System.out.println("Bottom:" + z.getBottom() + " " +
-                        "Top:" + z.getTop() + " Weight:" + z.getWeight()))
-                .collect(Collectors.toList()));
-
+        if (boxList.isEmpty()) {
+            return;
+        }
+        drawStack(getTallestBoxStack.apply(boxList));
     }
 
     private void drawStack(List<Box> boxes) {
@@ -166,76 +162,104 @@ public class Presenter implements Initializable {
         stage.show();
     }
 
-    private Function<List<Box>, List<List<Box>>> calculateAllIncreasingSubsequences
+    private Function<List<Box>, List<Box>> getTallestBoxStack
             = (list) -> {
-        int[] lis = new int[list.size()];
-        ArrayList<Box>[] lists = new ArrayList[list.size()];
+        list.sort(Comparator.comparingDouble(Box::getWeight));
+//        HashMap<Side, List<Box>>[] answerList = new HashMap[list.size()];
+        HashMap<Side, Integer>[] valuesList = new HashMap[list.size()];
         for (int i = 0; i < list.size(); i++) {
-            lis[i] = 1;
-            lists[i] = new ArrayList<>();
-            lists[i].add(list.get(i));
+            valuesList[i] = new HashMap<>();
+            for (int j = 0; j < 6; j++) {
+                valuesList[i].put(Side.values()[j], 1);
+            }
+//            answerList[i] = new HashMap<>();
+//            for (int j = 0; j < 6; j++) {
+//                answerList[i].put(Side.values()[j],
+//                        Collections.singletonList(list.get(i)
+//                                .setSideOnTop(Side.values()[j])));
+//            }
         }
+
         for (int i = 1; i < list.size(); i++) {
-            for (int j = 0; j < i; j++) {
-                if (list.get(i).getWeight() > list.get(j).getWeight()
-                        && lis[i] < lis[j] + 1) {
-                    lis[i]++;
-                    lists[i].add(lists[i].size() - 1, list.get(j));
+            for (int k = 0; k < i; k++) {
+                for (int j = 0; j < 6; j++) {
+                    int curValue = valuesList[i].get(Side.values()[j]);
+                    Color color = list.get(i).getSides().get(Side.values()[j]);
+                    List<Side> sides = list.get(k).getSide_s(color);
+                    for (Side s : sides) {
+                        int value = valuesList[k].get(s);
+                        if (curValue <= value && value <=/*fixme*/ valuesList[k]
+                                .get(s.getTheOtherSide())) {
+                            curValue++;
+//                            List<Box> lis = answerList[i].get(Side.values()[j]);
+//                            lis.add(lis.size() - 1,
+//                                    list.get(k).setSideOnBottom(s));
+//                            answerList[i].put(Side.values()[j],lis);
+                            break;
+                        }
+                    }
+                    valuesList[i].put(Side.values()[j], curValue);
                 }
             }
         }
-        return Arrays.asList(lists);
+        int maxIndex = 0;
+        int maxValue = 0;
+        Side topSide = null;
+        for (int i = 0; i < list.size(); i++) {
+            int temp = valuesList[i].values()
+                    .stream()
+                    .mapToInt(Integer::intValue)
+                    .max().orElse(0);
+            if (temp > maxValue) {
+                topSide = valuesList[i].entrySet()
+                        .stream()
+                        .filter(z -> z.getValue().equals(temp))
+                        .map(Map.Entry::getKey)
+                        .findAny()
+                        .get();
+                maxIndex = i;
+                maxValue = temp;
+            }
+        }
+        List<Box> result = new ArrayList<>();
+        Box box = list.get(maxIndex).setSideOnTop(topSide);
+        Color color = box.getTop();
+        result.add(box);
+
+        extractAnswer(list, valuesList, maxIndex, result, color);
+        Collections.reverse(result);
+        return result;
     };
 
-    private Function<List<List<Box>>, List<Box>> getTheHighestPossibleStack =
-            (lists) -> {
-                lists.sort(Comparator.comparingInt(List::size));
-                List<Box> answer = null;
-                for (int i = lists.size() - 1; i >= 0; i--) {
-                    answer = getAnswer(lists.get(i));
-                    if (answer != null && answer.isEmpty()) {
-                        break;
-                    }
-                }
-                return answer;
-            };
-
-    // Find whether the answer is acceptable or not
-    private List<Box> getAnswer(List<Box> boxes) {
-        //all variations of each cube - n cubes each having a set of 6 rotations
-        Set<Box>[] initial = new HashSet[boxes.size()];
-        Set<ArrayList<Box>> answer = new HashSet<>();
-        // solving for bottom - O(6n)
-        for (int i = 0; i < boxes.size(); i++) {
-            initial[i] = new HashSet<>();
-            for (Box box : boxes.get(i).getAllRotations()) {
-                initial[i].add(box);
-                if (i == 0) {
-                    answer.add(new ArrayList<>(List.of(box)));
-                }
+    private void extractAnswer(List<Box> list, HashMap<Side, Integer>[]
+            valuesList, int maxIndex, List<Box> result, Color color) {
+        if (maxIndex == 0) return;
+        int index = 0;
+        int maxVal = 0;
+        Side top = null;
+        for (int i = 0; i < maxIndex; i++) {
+            if (!list.get(i).containsColor(color)) continue;
+            int temp = valuesList[i].values()
+                    .stream().mapToInt(Integer::intValue).max().getAsInt();
+            if (temp > maxVal) {
+                int finalI = i;
+                top = valuesList[i].entrySet()
+                        .stream()
+                        .filter(z -> z.getValue().equals(temp))
+                        .map(Map.Entry::getKey)
+                        .filter(x -> list.get(finalI).getSides()
+                                .get(x.getTheOtherSide()).equals(color))
+                        .findFirst().get();
+                index = i;
+                maxVal = temp;
             }
         }
-        for (int i = 1; i < boxes.size(); i++) {
-            answer = findCompatibles(answer, initial[i]);
-        }
-        return answer//get any possible solution with max Height
-                .stream()
-                .reduce((x, y) -> x.size() > y.size() ? x : y)
-                .orElse(new ArrayList<>());
+        Box wantedBox = list.get(index).setSideOnTop(top);
+        Color topColor = wantedBox.getTop();
+        result.add(wantedBox);
+        if (maxVal == 1) return;
+        extractAnswer(list, valuesList, index, result, topColor);
     }
 
-    private Set<ArrayList<Box>> findCompatibles(Set<ArrayList<Box>> answer,
-                                                Set<Box> boxes) {
-        Set<ArrayList<Box>> result = new HashSet<>();
-        for (ArrayList<Box> seq : answer) {
-            for (Box box : boxes) {
-                if (seq.get(seq.size() - 1).getBottom().equals(box.getTop())) {
-                    ArrayList<Box> acceptableSeq = (ArrayList<Box>) seq.clone();
-                    acceptableSeq.add(box);
-                    result.add(acceptableSeq);
-                }
-            }
-        }
-        return result;
-    }
+
 }

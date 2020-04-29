@@ -3,6 +3,7 @@ package ir.shayandaneshvar;
 import javafx.scene.paint.Color;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * ----______
@@ -17,7 +18,7 @@ import java.util.*;
  * @author shayan daneshvar
  *
  */
-public class Box {
+public class Box  {
     private final double weight;
     private final HashMap<Side, Color> sides = new HashMap<>();
 
@@ -29,26 +30,71 @@ public class Box {
     // each side so 24 - 6*3 = 6 - or think of how many possible sides could
     // you put on top of the box which is 6 also
     public List<Box> getAllRotations() {
-        Box box1 = new Box(weight).addSides(
+        Box box1 = getS1OnTop();
+        Box box2 = getS5OnTop();
+        Box box3 = getS6OnTop();
+        Box box4 = getS3OnTop();
+        Box box5 = getS4OnTop();
+        return new ArrayList<>(Arrays.asList(box1, box2, box3, box4, box5, this));
+    }
+
+    private Box getS1OnTop() {
+        return new Box(weight).addSides(
                 sides.get(Side.S5), sides.get(Side.S1), sides.get(Side.S3),
                 sides.get(Side.S4), sides.get(Side.S6), sides.get(Side.S2));
-        Box box2 = new Box(weight).addSides(
+    }
+
+    private Box getS5OnTop() {
+        return new Box(weight).addSides(
                 sides.get(Side.S6), sides.get(Side.S5), sides.get(Side.S3),
                 sides.get(Side.S4), sides.get(Side.S2), sides.get(Side.S1));
-        Box box3 = new Box(weight).addSides(
+    }
+
+    private Box getS6OnTop() {
+        return new Box(weight).addSides(
                 sides.get(Side.S2), sides.get(Side.S6), sides.get(Side.S3),
                 sides.get(Side.S4), sides.get(Side.S1), sides.get(Side.S5));
-        Box box4 = new Box(weight).addSides(
+    }
+
+    private Box getS3OnTop() {
+        return new Box(weight).addSides(
                 sides.get(Side.S1), sides.get(Side.S3), sides.get(Side.S5),
                 sides.get(Side.S2), sides.get(Side.S4), sides.get(Side.S6));
-        Box box5 = new Box(weight).addSides(
+    }
+
+    private Box getS4OnTop() {
+        return new Box(weight).addSides(
                 sides.get(Side.S1), sides.get(Side.S4), sides.get(Side.S2),
                 sides.get(Side.S5), sides.get(Side.S3), sides.get(Side.S6));
-        return new ArrayList<>(Arrays.asList(box1, box2, box3, box4, box5, this));
     }
 
     public Box(double weight) {
         this.weight = weight;
+    }
+
+    public Box setSideOnTop(Side side) {
+        Box box = null;
+        switch (side) {
+            case S1:
+                box = getS1OnTop();
+                break;
+            case S2:
+                box = this;
+                break;
+            case S3:
+                box = getS3OnTop();
+                break;
+            case S4:
+                box = getS4OnTop();
+                break;
+            case S5:
+                box = getS5OnTop();
+                break;
+            case S6:
+                box = getS6OnTop();
+                break;
+        }
+        return box;
     }
 
     public boolean areParallel(Color side, Color otherSide) {
@@ -61,6 +107,14 @@ public class Box {
                 .map(Map.Entry::getKey)
                 .anyMatch(z -> Side.values()[5 - z.ordinal()]
                         .equals(otherSide));
+    }
+
+
+    public List<Side> getSide_s(Color color) {
+        return sides.entrySet()
+                .stream()
+                .filter(x -> x.getValue().equals(color))
+                .map(Map.Entry::getKey).collect(Collectors.toList());
     }
 
     public double getWeight() {
@@ -111,13 +165,12 @@ public class Box {
         return this;
     }
 
+
     public String toString() {
         return "Box(weight=" + this.getWeight() + ", sides=" + this.getSides() + ")";
     }
 
-    public enum Side {
-        // x || y
-        //ordinals 0 to 5 => Side(x) + Side(y) = 5
-        S1, S2, S3, S4, S5, S6
+    public Box setSideOnBottom(Side s) {
+        return setSideOnTop(s.getTheOtherSide());
     }
 }

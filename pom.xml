@@ -14,14 +14,86 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
+                    <compilerArgs>
+                        <arg>
+                            --add-exports
+                        </arg>
+                        <arg>
+                            javafx.controls/com.sun.javafx.scene.control.behavior=com.jfoenix
+                        </arg>
+                        <arg>
+                            --add-exports
+                        </arg>
+                        <arg>
+                            javafx.base/com.sun.javafx.binding=com.jfoenix
+                        </arg>
+                        <arg>
+                            --add-exports
+                        </arg>
+                        <arg>
+                            javafx.graphics/com.sun.javafx.stage=com.jfoenix
+                        </arg>
+                        <arg>
+                            --add-exports
+                        </arg>
+                        <arg>
+                            javafx.base/com.sun.javafx.event=com.jfoenix
+                        </arg>
+                        <arg>
+                            --add-exports
+                        </arg>
+                        <arg>
+                            javafx.controls/com.sun.javafx.scene.control=com.jfoenix
+                        </arg>
+                    </compilerArgs>
                     <source>${java.ver}</source>
                     <target>${java.ver}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.4</version>
+                <configuration>
+                    <stripDebug>true</stripDebug>
+                    <compress>2</compress>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <noManPages>true</noManPages>
+                    <launcher>launcher</launcher>
+                    <jlinkImageName>box-stacking-problem</jlinkImageName>
+                    <jlinkZipName>box-stacking-problem</jlinkZipName>
+                    <mainClass>ir.shayandaneshvar.Main</mainClass>
+                    <options>
+                        <option>--add-exports</option>
+                        <option>
+                            javafx.controls/com.sun.javafx.scene.control.behavior=com.jfoenix
+                        </option>
+                        <option>--add-exports</option>
+                        <option>
+                            javafx.base/com.sun.javafx.binding=com.jfoenix
+                        </option>
+                        <option>--add-exports</option>
+                        <option>
+                            javafx.graphics/com.sun.javafx.stage=com.jfoenix
+                        </option>
+                        <option>--add-exports</option>
+                        <option>
+                            javafx.base/com.sun.javafx.event=com.jfoenix
+                        </option>
+                        <option>--add-exports</option>
+                        <option>
+                            javafx.controls/com.sun.javafx.scene.control=com.jfoenix
+                        </option>
+                    </options>
                 </configuration>
             </plugin>
         </plugins>
     </build>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8
+        </project.reporting.outputEncoding>
         <java.ver>11</java.ver>
         <fx.ver>11.0.2</fx.ver>
     </properties>
