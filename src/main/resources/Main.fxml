@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXColorPicker?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="root" prefHeight="400.0" prefWidth="227.0" style="-fx-background-color: #faf4ff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ir.shayandaneshvar.Presenter">
+   <children>
+      <AnchorPane layoutX="14.0" layoutY="10.0" prefHeight="380.0" prefWidth="200.0" style="-fx-background-color: #f3c623; -fx-background-radius: 5%;">
+         <children>
+            <JFXColorPicker fx:id="s1Color" editable="true" layoutX="95.0" layoutY="52.0" prefHeight="25.0" prefWidth="85.0" />
+            <Label layoutX="15.0" layoutY="14.0" text="Box Stacking Problem" textFill="#10375c">
+               <font>
+                  <Font name="Arial Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="21.0" layoutY="57.0" text="Color S1:" textFill="#10375c">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+            </Label>
+            <JFXColorPicker fx:id="s2Color" editable="true" layoutX="95.0" layoutY="83.0" prefHeight="25.0" prefWidth="85.0" />
+            <Label layoutX="21.0" layoutY="88.0" text="Color S2:" textFill="#10375c">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+            </Label>
+            <JFXColorPicker fx:id="s3Color" editable="true" layoutX="95.0" layoutY="114.0" prefHeight="25.0" prefWidth="85.0" />
+            <Label layoutX="21.0" layoutY="119.0" text="Color S3:" textFill="#10375c">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+            </Label>
+            <JFXColorPicker fx:id="s4Color" editable="true" layoutX="95.0" layoutY="145.0" prefHeight="25.0" prefWidth="85.0" />
+            <Label layoutX="21.0" layoutY="150.0" text="Color S4:" textFill="#10375c">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+            </Label>
+            <JFXColorPicker fx:id="s5Color" editable="true" layoutX="95.0" layoutY="176.0" prefHeight="25.0" prefWidth="85.0" />
+            <Label layoutX="21.0" layoutY="181.0" text="Color S5:" textFill="#10375c">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+            </Label>
+            <JFXColorPicker fx:id="s6Color" editable="true" layoutX="95.0" layoutY="207.0" prefHeight="25.0" prefWidth="85.0" />
+            <Label layoutX="21.0" layoutY="212.0" text="Color S6:" textFill="#10375c">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="27.0" layoutY="250.0" text="Weight:" textFill="#10375c">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+            </Label>
+            <JFXTextField fx:id="weightField" focusColor="#844685" layoutX="95.0" layoutY="246.0" prefHeight="25.0" prefWidth="85.0" unFocusColor="#10375c" />
+            <JFXButton buttonType="RAISED" layoutX="92.0" layoutY="291.0" onMouseClicked="#addBox" prefHeight="32.0" prefWidth="91.0" ripplerFill="#844685" style="-fx-background-color: #10375c;" text="Add Box" textFill="#f3c623">
+               <font>
+                  <Font name="Arial" size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" layoutX="18.0" layoutY="335.0" onMouseClicked="#startStacking" prefHeight="32.0" prefWidth="164.0" ripplerFill="#10375c" style="-fx-background-color: #844685;" text="Start" textFill="#f3c623">
+               <font>
+                  <Font name="Arial" size="16.0" />
+               </font>
+            </JFXButton>
+            <ImageView fitHeight="40.0" fitWidth="38.0" layoutX="27.0" layoutY="285.0" onMouseClicked="#reset" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/icons8-reboot-96.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

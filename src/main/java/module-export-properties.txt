@@ -1,0 +1,10 @@
+Required JRE version : 11+
+
+Add the following to VM Options in order to compile successfully:
+
+--add-exports=javafx.controls/com.sun.javafx.scene.control.behavior=com.jfoenix
+--add-exports=javafx.base/com.sun.javafx.binding=com.jfoenix
+--add-exports=javafx.graphics/com.sun.javafx.stage=com.jfoenix
+--add-exports=javafx.base/com.sun.javafx.event=com.jfoenix
+--add-exports=javafx.controls/com.sun.javafx.scene.control=com.jfoenix
+
