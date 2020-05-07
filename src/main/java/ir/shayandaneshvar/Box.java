@@ -26,42 +26,26 @@ public class Box  {
         return sides.containsValue(color);
     }
 
-    // get all useful non duplicate boxes 24 possible boxes 3 duplicate for
-    // each side so 24 - 6*3 = 6 - or think of how many possible sides could
-    // you put on top of the box which is 6 also
-    public List<Box> getAllRotations() {
-        Box box1 = getS1OnTop();
-        Box box2 = getS5OnTop();
-        Box box3 = getS6OnTop();
-        Box box4 = getS3OnTop();
-        Box box5 = getS4OnTop();
-        return new ArrayList<>(Arrays.asList(box1, box2, box3, box4, box5, this));
-    }
-
     private Box getS1OnTop() {
         return new Box(weight).addSides(
                 sides.get(Side.S5), sides.get(Side.S1), sides.get(Side.S3),
                 sides.get(Side.S4), sides.get(Side.S6), sides.get(Side.S2));
     }
-
     private Box getS5OnTop() {
         return new Box(weight).addSides(
                 sides.get(Side.S6), sides.get(Side.S5), sides.get(Side.S3),
                 sides.get(Side.S4), sides.get(Side.S2), sides.get(Side.S1));
     }
-
     private Box getS6OnTop() {
         return new Box(weight).addSides(
                 sides.get(Side.S2), sides.get(Side.S6), sides.get(Side.S3),
                 sides.get(Side.S4), sides.get(Side.S1), sides.get(Side.S5));
     }
-
     private Box getS3OnTop() {
         return new Box(weight).addSides(
                 sides.get(Side.S1), sides.get(Side.S3), sides.get(Side.S5),
                 sides.get(Side.S2), sides.get(Side.S4), sides.get(Side.S6));
     }
-
     private Box getS4OnTop() {
         return new Box(weight).addSides(
                 sides.get(Side.S1), sides.get(Side.S4), sides.get(Side.S2),
@@ -96,19 +80,6 @@ public class Box  {
         }
         return box;
     }
-
-    public boolean areParallel(Color side, Color otherSide) {
-        if (!(containsColor(side) && containsColor(otherSide))) {
-            return false;
-        }
-        return sides.entrySet()
-                .stream()
-                .filter(x -> x.getValue().equals(side))
-                .map(Map.Entry::getKey)
-                .anyMatch(z -> Side.values()[5 - z.ordinal()]
-                        .equals(otherSide));
-    }
-
 
     public List<Side> getSide_s(Color color) {
         return sides.entrySet()
@@ -165,12 +136,7 @@ public class Box  {
         return this;
     }
 
-
     public String toString() {
         return "Box(weight=" + this.getWeight() + ", sides=" + this.getSides() + ")";
-    }
-
-    public Box setSideOnBottom(Side s) {
-        return setSideOnTop(s.getTheOtherSide());
     }
 }

@@ -31,7 +31,6 @@ public class Cube extends Group {
         box6.setTranslateZ(length / 2);
         getChildren().addAll(box1, box2, box3, box4, box5, box6);
     }
-
     public void enableRotationAnimation() {
         new AnimationTimer() {
             public void handle(long l) {

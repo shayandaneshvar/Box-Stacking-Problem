@@ -27,30 +27,19 @@ import java.util.*;
 import java.util.function.Function;
 
 public class Presenter implements Initializable {
-    @FXML
-    private AnchorPane root;
-    @FXML
-    private JFXColorPicker s1Color;
-    @FXML
-    private JFXColorPicker s2Color;
-    @FXML
-    private JFXColorPicker s3Color;
-    @FXML
-    private JFXColorPicker s4Color;
-    @FXML
-    private JFXColorPicker s5Color;
-    @FXML
-    private JFXColorPicker s6Color;
-    @FXML
-    private JFXTextField weightField;
-
+    @FXML private AnchorPane root;
+    @FXML private JFXColorPicker s1Color;
+    @FXML private JFXColorPicker s2Color;
+    @FXML private JFXColorPicker s3Color;
+    @FXML private JFXColorPicker s4Color;
+    @FXML private JFXColorPicker s5Color;
+    @FXML private JFXColorPicker s6Color;
+    @FXML private JFXTextField weightField;
     private List<Box> boxList;
-
     private Group view;
     private Stage stage;
 
-    @FXML
-    void addBox(MouseEvent event) {
+    @FXML void addBox() {
         try {
             show3DView();
         } catch (URISyntaxException | MalformedURLException e) {
@@ -71,7 +60,6 @@ public class Presenter implements Initializable {
         boxList.add(box);
         update3DView();
     }
-
     private void update3DView() {
         clearWindow();
         for (int i = 0; i < boxList.size(); i++) {
@@ -87,25 +75,19 @@ public class Presenter implements Initializable {
             view.getChildren().addAll(cube, label);
         }
     }
-
-    @FXML
-    void reset(MouseEvent event) {
+    @FXML void reset() {
         boxList.clear();
         clearWindow();
     }
-
     private void clearWindow() {
         view.getChildren().clear();
     }
-
-    @FXML
-    void startStacking(MouseEvent event) {
+    @FXML void startStacking() {
         if (boxList.isEmpty()) {
             return;
         }
         drawStack(getTallestBoxStack.apply(boxList));
     }
-
     private void drawStack(List<Box> boxes) {
         clearWindow();
         for (int i = 0; i < boxes.size(); i++) {
@@ -133,7 +115,6 @@ public class Presenter implements Initializable {
             }.start();
         }
     }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         boxList = new ArrayList<>();
@@ -150,7 +131,6 @@ public class Presenter implements Initializable {
                 WindowEvent.WINDOW_CLOSE_REQUEST, Event::consume);
         stage.setTitle("Colored Box Stacking Problem");
     }
-
     private void show3DView() throws URISyntaxException, MalformedURLException {
         if (stage.isShowing()) {
             return;
@@ -161,23 +141,15 @@ public class Presenter implements Initializable {
         stage.initOwner(root.getScene().getWindow());
         stage.show();
     }
-
     private Function<List<Box>, List<Box>> getTallestBoxStack
             = (list) -> {
         list.sort(Comparator.comparingDouble(Box::getWeight));
-//        HashMap<Side, List<Box>>[] answerList = new HashMap[list.size()];
         HashMap<Side, Integer>[] valuesList = new HashMap[list.size()];
         for (int i = 0; i < list.size(); i++) {
             valuesList[i] = new HashMap<>();
             for (int j = 0; j < 6; j++) {
                 valuesList[i].put(Side.values()[j], 1);
             }
-//            answerList[i] = new HashMap<>();
-//            for (int j = 0; j < 6; j++) {
-//                answerList[i].put(Side.values()[j],
-//                        Collections.singletonList(list.get(i)
-//                                .setSideOnTop(Side.values()[j])));
-//            }
         }
 
         for (int i = 1; i < list.size(); i++) {
@@ -188,13 +160,9 @@ public class Presenter implements Initializable {
                     List<Side> sides = list.get(k).getSide_s(color);
                     for (Side s : sides) {
                         int value = valuesList[k].get(s);
-                        if (curValue <= value && value <=/*fixme*/ valuesList[k]
+                        if (/*curValue <= value &&*/ value <= valuesList[k]
                                 .get(s.getTheOtherSide())) {
                             curValue++;
-//                            List<Box> lis = answerList[i].get(Side.values()[j]);
-//                            lis.add(lis.size() - 1,
-//                                    list.get(k).setSideOnBottom(s));
-//                            answerList[i].put(Side.values()[j],lis);
                             break;
                         }
                     }
@@ -225,12 +193,10 @@ public class Presenter implements Initializable {
         Box box = list.get(maxIndex).setSideOnTop(topSide);
         Color color = box.getTop();
         result.add(box);
-
         extractAnswer(list, valuesList, maxIndex, result, color);
         Collections.reverse(result);
         return result;
     };
-
     private void extractAnswer(List<Box> list, HashMap<Side, Integer>[]
             valuesList, int maxIndex, List<Box> result, Color color) {
         if (maxIndex == 0) return;
@@ -260,6 +226,5 @@ public class Presenter implements Initializable {
         if (maxVal == 1) return;
         extractAnswer(list, valuesList, index, result, topColor);
     }
-
 
 }
